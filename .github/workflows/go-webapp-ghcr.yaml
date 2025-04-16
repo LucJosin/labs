@@ -25,6 +25,7 @@ jobs:
 
       # Step 2
       - name: Set up latest git tag
+        working-directory: blog/actions-containers-ghcr/go-webapp-ghcr
         run: echo "VERSION=${TAG#*@}" >> $GITHUB_ENV
         # run: echo "VERSION=${TAG#v}" >> $GITHUB_ENV
         env:
