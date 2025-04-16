@@ -1,0 +1,54 @@
+# Workflow name shown in the GitHub Actions
+name: "Build and Push to GHCR"
+
+# Trigger the workflow when pushing a tag like: v1.0.0
+on:
+  push:
+    tags:
+      - "go-webapp-ghcr@v[0-9].[0-9]+.[0-9]"
+      # - "v[0-9].[0-9]+.[0-9]"
+
+# Set environment variables available to all steps
+env:
+  GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }} # GitHub Container Registry token (set in repository secrets)
+  CONTAINER_NAME: lucjosin/go-webapp-ghcr # Image name to publish (all lowercase)
+  USER_NAME: LucJosin # GitHub username used for GHCR authentication
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+      # Step 1
+      - name: Set up checkout
+        uses: actions/checkout@v5
+
+      # Step 2
+      - name: Set up latest git tag
+        run: echo "VERSION=${TAG#*@}" >> $GITHUB_ENV
+        # run: echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+        env:
+          TAG: "$(git describe --tags)"
+
+      - name: Logs VERSION
+        run: echo "$VERSION"
+
+      # --- Build Stage ---
+
+      # Step 3
+      # - name: Docker build
+      #   run: |
+      #     docker build -t ghcr.io/${{ env.CONTAINER_NAME }}:latest .
+      #     docker build -t ghcr.io/${{ env.CONTAINER_NAME }}:${{ env.VERSION }} .
+
+      # --- Publish Stage ---
+
+      # Step 4
+      # - name: GitHub (GHCR) login
+      #   run: echo $GHCR_TOKEN | docker login ghcr.io -u $USER_NAME --password-stdin
+
+      # Step 5
+      # - name: GitHub (GHCR) push
+      #   run: |
+      #     docker push ghcr.io/${{ env.CONTAINER_NAME }}:latest
+      #     docker push ghcr.io/${{ env.CONTAINER_NAME }}:${{ env.VERSION }}
