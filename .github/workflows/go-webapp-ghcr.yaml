@@ -21,7 +21,7 @@ jobs:
     steps:
       # Step 1
       - name: Set up checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       # Step 2
       - name: Set up latest git tag
