@@ -1,0 +1,6 @@
+services:
+  app:
+    image: ghcr.io/lucjosin/go-webapp-ghcr
+    container_name: golang-app
+    ports:
+      - "8080:8080"
