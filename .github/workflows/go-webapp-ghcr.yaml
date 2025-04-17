@@ -29,6 +29,7 @@ jobs:
       # --- Build Stage ---
 
       - name: Docker build
+        working-directory: blog/actions-containers-ghcr/go-webapp-ghcr
         run: |
           docker build -t ghcr.io/${{ env.CONTAINER_NAME }}:latest .
           docker build -t ghcr.io/${{ env.CONTAINER_NAME }}:${{ env.VERSION }} .
